@@ -11,16 +11,23 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final WalletService walletService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+    		WalletService walletService	) {
+    	
         this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.walletService = walletService;
     }
 
     public User createUser(User user) {
     	user.setPassword(
                 passwordEncoder.encode(user.getPassword()));
-                return userRepository.save(user);        
+    	User saved= userRepository.save(user);
+    	walletService.createWallet(saved);
+                return saved;        
     }
     
     public List<User> getAllUsers() {
@@ -33,6 +40,7 @@ public class UserService {
     
     public void deleteUser(Integer id) {
     	userRepository.deleteById(id);
+    	walletService.deleteWallet(id);
     }
     
     public Optional<User> findUsername(String username){

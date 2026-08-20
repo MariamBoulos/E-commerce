@@ -59,10 +59,5 @@ public class UserController {
 	public void deleteUser(@PathVariable Integer id) {
 	    service.deleteUser(id);
 	}
-	
-	@GetMapping("/test")
-	public String test() {
-	    return "You are authenticated!";
-	}
 
 }

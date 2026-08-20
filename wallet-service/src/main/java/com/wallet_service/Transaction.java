@@ -19,6 +19,8 @@ public class Transaction {
 	@GeneratedValue
 	private Integer transactionId;
 	
+	private TransactionType type;
+	
 	private BigDecimal amount;
 	
 	private LocalDateTime timestamp;
@@ -27,12 +29,12 @@ public class Transaction {
 	@JoinColumn(name = "wallet_id", referencedColumnName = "user_id", nullable = false)
 	private Wallet wallet;
 
-	public Transaction(Integer transactionId,BigDecimal amount, LocalDateTime timestamp,
-			Wallet wallet) {
+	public Transaction(BigDecimal amount, LocalDateTime timestamp
+			, TransactionType type,Wallet wallet) {
 		super();
-		this.transactionId = transactionId;
 		this.amount = amount;
 		this.timestamp = timestamp;
+		this.type = type;
 		this.wallet = wallet;
 	}
 
@@ -55,6 +57,14 @@ public class Transaction {
 	public LocalDateTime getTimestamp() {
 		return timestamp;
 	}
+	
+	public TransactionType getType() {
+        return type;
+    }
+
+    public void setType(TransactionType type) {
+        this.type = type;
+    }
 
 	public void setTimestamp(LocalDateTime timestamp) {
 		this.timestamp = timestamp;
@@ -70,8 +80,8 @@ public class Transaction {
 
 	@Override
 	public String toString() {
-		return "Transaction [transactionId=" + transactionId + ", amount=" + amount
-				+ ", timestamp=" + timestamp + ", wallet=" + wallet + "]";
+		return "Transaction [transactionId=" + transactionId + ", type=" + type + ", amount=" + amount + ", timestamp="
+				+ timestamp + ", wallet=" + wallet + "]";
 	}
 	
 
