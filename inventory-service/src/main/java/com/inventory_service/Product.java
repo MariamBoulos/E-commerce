@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity(name="product")
 public class Product {
@@ -20,6 +22,10 @@ public class Product {
 	private String description;
 	
 	private BigDecimal price;
+	
+	@ManyToOne
+	@JoinColumn(name = "category_id", nullable = false)
+	private Category category;
 
 	public Product(Integer productId, String description, BigDecimal price) {
 		super();
@@ -42,6 +48,15 @@ public class Product {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 	public BigDecimal getPrice() {

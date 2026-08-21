@@ -1,36 +1,33 @@
 package com.inventory_service;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 
 @Entity(name="stock")
 public class Stock {
 	
+	public Stock() {
+		
+	}
+	
 	@Id
-	private Integer productId;
+    @GeneratedValue
+    private Integer stockId;
 	
 	private Integer available;
 	
 	@OneToOne
-	@MapsId
 	@JoinColumn(name = "product_id", nullable = false)
 	private Product product;
 
-	public Stock(Integer productId, Integer available) {
+	public Stock(Integer stockId, Integer available, Product product) {
 		super();
-		this.productId = productId;
+		this.stockId = stockId;
 		this.available = available;
-	}
-
-	public Integer getProductId() {
-		return productId;
-	}
-
-	public void setProductId(Integer productId) {
-		this.productId = productId;
+		this.product = product;
 	}
 
 	public Integer getAvailable() {
@@ -39,6 +36,14 @@ public class Stock {
 
 	public void setAvailable(Integer available) {
 		this.available = available;
+	}
+
+	public Integer getStockId() {
+		return stockId;
+	}
+
+	public void setStockId(Integer stockId) {
+		this.stockId = stockId;
 	}
 
 	public Product getProduct() {
@@ -51,7 +56,7 @@ public class Stock {
 
 	@Override
 	public String toString() {
-		return "Stock [productId=" + productId + ", available=" + available + ", product=" + product + "]";
+		return "Stock [stockId=" + stockId + ", available=" + available + ", product=" + product + "]";
 	}
 
 }
