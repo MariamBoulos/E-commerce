@@ -1,5 +1,7 @@
 package com.inventory_service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,7 +22,6 @@ public class ProductService {
 	    Category category = categoryRepo.findById(product.getCategory().getCategoryId()).orElseThrow();
 	    product.setCategory(category);
 	    Product savedProduct = productRepo.save(product);
-
 	    Stock stock = new Stock();
 	    stock.setProduct(savedProduct);
 	    stock.setAvailable(0);
@@ -28,6 +29,11 @@ public class ProductService {
 
 	    return savedProduct;
 	}
+	
+	public Optional<Product> getProduct(Integer productId) {
+		return productRepo.findById(productId);
+	}
+	
 	
 	public void deleteProduct(Integer productId) {
 

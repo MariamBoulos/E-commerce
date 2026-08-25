@@ -1,6 +1,7 @@
 package com.shop_service;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 
@@ -12,11 +13,15 @@ public class Cart {
 	}
 	
 	@Id
+	@GeneratedValue
+	private Integer cartId;
+	
 	private Integer userId;
 
-	public Cart(Integer userId) {
+	public Cart(Integer userId,Integer cartId) {
 		super();
 		this.userId = userId;
+		this.cartId=cartId;
 	}
 
 	public Integer getUserId() {
@@ -27,9 +32,17 @@ public class Cart {
 		this.userId = userId;
 	}
 
+	public Integer getCartId() {
+		return cartId;
+	}
+
+	public void setCartId(Integer cartId) {
+		this.cartId = cartId;
+	}
+
 	@Override
 	public String toString() {
-		return "Cart [userId=" + userId + "]";
+		return "Cart [cartId=" + cartId + ", userId=" + userId + "]";
 	}
 
 }

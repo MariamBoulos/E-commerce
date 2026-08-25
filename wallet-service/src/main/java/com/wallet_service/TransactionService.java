@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class TransactionService {
 	
-	    private WalletRepository walletRepo;
-	    private TransactionRepository transactionRepo;
+	    private final WalletRepository walletRepo;
+	    private final TransactionRepository transactionRepo;
 
 	    public TransactionService(WalletRepository walletRepo, TransactionRepository transactionRepo) {
 	        this.walletRepo = walletRepo;

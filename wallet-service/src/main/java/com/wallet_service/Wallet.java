@@ -3,6 +3,7 @@ package com.wallet_service;
 import java.math.BigDecimal;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
@@ -16,6 +17,9 @@ public class Wallet {
     }
 	
 	@Id
+	@GeneratedValue
+	private Integer walletId;
+	
 	private Integer userId;
 
 	private BigDecimal balance;

@@ -26,5 +26,10 @@ public class WalletService {
 	public void deleteWallet(Integer id) {
 		walletRepo.deleteById(id);
 	}
+	
+	public void deleteWalletByUserId(Integer userId) {
+	    Wallet wallet = walletRepo.findByUserUserId(userId).orElseThrow();
+	    walletRepo.delete(wallet);
+	}
 
 }

@@ -10,9 +10,9 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity(name="cart_product")
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "product_id"}))
-public class Cart_Product {
+public class CartProduct {
 	
-	public Cart_Product() {
+	public CartProduct() {
 		
 	}
 	
@@ -28,7 +28,7 @@ public class Cart_Product {
 	@JoinColumn(name = "user_id", nullable = false)
 	private Cart cart;
 
-	public Cart_Product(Integer cartProductId, Integer productId, Integer quantity, Cart cart) {
+	public CartProduct(Integer cartProductId, Integer productId, Integer quantity, Cart cart) {
 		super();
 		this.cartProductId = cartProductId;
 		this.productId = productId;

@@ -1,7 +1,10 @@
 package com.shop_service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
@@ -15,18 +18,27 @@ public class Payment {
 	}
 	
 	@Id
+	@GeneratedValue
+	private Integer paymentId;
+	
+	private Integer userId;
+	
 	private Integer orderId;
 	
-	private String status;
+	private PaymentStatus status;
 	
 	private BigDecimal amount;
+	
+	private LocalDateTime start;
+	
+	private LocalDateTime end;
 	
 	@OneToOne
 	@MapsId
 	@JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-	public Payment(Integer orderId, String status, BigDecimal amount, Order order) {
+	public Payment(Integer orderId, BigDecimal amount, Order order, PaymentStatus status) {
 		super();
 		this.orderId = orderId;
 		this.status = status;
@@ -40,14 +52,6 @@ public class Payment {
 
 	public void setOrderId(Integer orderId) {
 		this.orderId = orderId;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 	public BigDecimal getAmount() {
@@ -68,7 +72,48 @@ public class Payment {
 
 	@Override
 	public String toString() {
-		return "Payment [orderId=" + orderId + ", status=" + status + ", amount=" + amount + ", order=" + order + "]";
+		return "Payment [paymentId=" + paymentId + ", userId=" + userId + ", orderId=" + orderId + ", status=" + status
+				+ ", amount=" + amount + ", order=" + order + "]";
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+	public Integer getPaymentId() {
+		return paymentId;
+	}
+
+	public void setPaymentId(Integer paymentId) {
+		this.paymentId = paymentId;
+	}
+
+	public LocalDateTime getStart() {
+		return start;
+	}
+
+	public void setStart(LocalDateTime start) {
+		this.start = start;
+	}
+
+	public LocalDateTime getEnd() {
+		return end;
+	}
+
+	public void setEnd(LocalDateTime end) {
+		this.end = end;
+	}
+
+	public PaymentStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(PaymentStatus status) {
+		this.status = status;
 	}
 
 }

@@ -1,0 +1,38 @@
+package com.shop_service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class OrderController {
+	
+	@Autowired
+	private OrderService orderService;
+
+	public OrderController(OrderService orderService) {
+		super();
+		this.orderService = orderService;
+	}
+	
+	@PostMapping("/createOrder/{id}")
+	public Order createOrder(@PathVariable Integer userId) {
+		return orderService.createOrder(userId);
+	}
+	
+	@DeleteMapping("/deleteOrder/{id}/{orderId}")
+	public void deleteOrder(@PathVariable Integer userId,@PathVariable Integer orderId) {
+		orderService.deleteOrder(userId, orderId);
+	}
+	
+	@GetMapping("/getAllOrdersforUser/{id}")
+	public List<Order> getAllOrdersforUser(@PathVariable Integer userId){
+		return orderService.allOrders(userId);
+	}
+
+}

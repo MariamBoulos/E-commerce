@@ -12,35 +12,38 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final WalletService walletService;
+    private final ShopProxy shopProxy;
 
-
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
-    		WalletService walletService	) {
-    	
-        this.userRepository = userRepository;
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, WalletService walletService,
+			ShopProxy shopProxy) {
+		super();
+		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.walletService = walletService;
-    }
+		this.shopProxy = shopProxy;
+	}
 
-    public User createUser(User user) {
-    	user.setPassword(
-                passwordEncoder.encode(user.getPassword()));
+	public User createUser(User user) {
+    	user.setPassword(passwordEncoder.encode(user.getPassword()));
     	User saved= userRepository.save(user);
     	walletService.createWallet(saved);
-                return saved;        
+    	shopProxy.createCart(user.getUserId());
+                
+    	return saved;        
     }
     
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
     
-    public Optional<User> findUser(Integer id) {
-    	return userRepository.findById(id);
+    public Optional<User> findUser(Integer userId) {
+    	return userRepository.findById(userId);
     }
     
-    public void deleteUser(Integer id) {
-    	userRepository.deleteById(id);
-    	walletService.deleteWallet(id);
+    public void deleteUser(Integer userId) {
+    	userRepository.deleteById(userId);
+    	walletService.deleteWalletByUserId(userId);
+    	shopProxy.deleteCartByUserId(userId);
     }
     
     public Optional<User> findUsername(String username){
