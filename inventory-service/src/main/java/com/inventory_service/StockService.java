@@ -1,5 +1,8 @@
 package com.inventory_service;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class StockService {
 	
 	private final StockRepository stockRepo;
@@ -10,13 +13,13 @@ public class StockService {
 	}
 
 	public void removeFromStock(Integer productId,Integer amount) {
-		Stock stock = stockRepo.findByProductProductId(productId).orElseThrow();
+		Stock stock = stockRepo.findByProductProductId(productId);
 		stock.setAvailable(stock.getAvailable()-amount);
 		stockRepo.save(stock);
 	}
 	
 	public void addToStock(Integer productId,Integer amount) {
-		Stock stock = stockRepo.findByProductProductId(productId).orElseThrow();
+		Stock stock = stockRepo.findByProductProductId(productId);
 		stock.setAvailable(stock.getAvailable()+amount);
 		stockRepo.save(stock);
 	}

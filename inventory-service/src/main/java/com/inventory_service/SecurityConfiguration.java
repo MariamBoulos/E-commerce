@@ -23,8 +23,15 @@ public class SecurityConfiguration {
             .csrf(csrf -> csrf.disable())
 
             .authorizeHttpRequests(auth -> auth
-                .anyRequest().authenticated()
-            )
+            	    .requestMatchers(
+            	        "/createProduct/**",
+            	        "/getProduct/**",
+            	        "/addToStock/**",
+            	        "/removeFromStock/**"
+            	    )
+            	    .permitAll()
+            	    .anyRequest().authenticated()
+            	)
 
             .addFilterBefore(
                 jwtFilter,

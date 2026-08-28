@@ -7,7 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 
 @Entity(name="payment")
@@ -23,8 +22,6 @@ public class Payment {
 	
 	private Integer userId;
 	
-	private Integer orderId;
-	
 	private PaymentStatus status;
 	
 	private BigDecimal amount;
@@ -34,24 +31,14 @@ public class Payment {
 	private LocalDateTime end;
 	
 	@OneToOne
-	@MapsId
 	@JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
 	public Payment(Integer orderId, BigDecimal amount, Order order, PaymentStatus status) {
 		super();
-		this.orderId = orderId;
 		this.status = status;
 		this.amount = amount;
 		this.order = order;
-	}
-
-	public Integer getOrderId() {
-		return orderId;
-	}
-
-	public void setOrderId(Integer orderId) {
-		this.orderId = orderId;
 	}
 
 	public BigDecimal getAmount() {
@@ -72,8 +59,8 @@ public class Payment {
 
 	@Override
 	public String toString() {
-		return "Payment [paymentId=" + paymentId + ", userId=" + userId + ", orderId=" + orderId + ", status=" + status
-				+ ", amount=" + amount + ", order=" + order + "]";
+		return "Payment [paymentId=" + paymentId + ", userId=" + userId + ", status=" + status + ", amount=" + amount
+				+ ", start=" + start + ", end=" + end + ", order=" + order + "]";
 	}
 
 	public Integer getUserId() {

@@ -12,22 +12,22 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final WalletService walletService;
-    private final ShopProxy shopProxy;
-
+    private final ShopServiceClient shopServiceClient;
+    
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, WalletService walletService,
-			ShopProxy shopProxy) {
+    		ShopServiceClient shopServiceClient) {
 		super();
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.walletService = walletService;
-		this.shopProxy = shopProxy;
+		this.shopServiceClient = shopServiceClient;
 	}
 
 	public User createUser(User user) {
     	user.setPassword(passwordEncoder.encode(user.getPassword()));
     	User saved= userRepository.save(user);
     	walletService.createWallet(saved);
-    	shopProxy.createCart(user.getUserId());
+    	shopServiceClient.createCart(user.getUserId());
                 
     	return saved;        
     }
@@ -43,7 +43,7 @@ public class UserService {
     public void deleteUser(Integer userId) {
     	userRepository.deleteById(userId);
     	walletService.deleteWalletByUserId(userId);
-    	shopProxy.deleteCartByUserId(userId);
+    	shopServiceClient.deleteCartByUserId(userId);
     }
     
     public Optional<User> findUsername(String username){

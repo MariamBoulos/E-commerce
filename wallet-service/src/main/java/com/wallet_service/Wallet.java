@@ -6,8 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 
 @Entity(name="wallet")
 public class Wallet {
@@ -20,12 +19,9 @@ public class Wallet {
 	@GeneratedValue
 	private Integer walletId;
 	
-	private Integer userId;
-
 	private BigDecimal balance;
 	
-	@OneToOne
-	@MapsId
+	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -33,14 +29,6 @@ public class Wallet {
 		super();
 		this.balance = balance;
 		this.user = user;
-	}
-
-	public Integer getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Integer userId) {
-		this.userId = userId;
 	}
 
 	public BigDecimal getBalance() {
@@ -61,7 +49,7 @@ public class Wallet {
 
 	@Override
 	public String toString() {
-		return "Wallet [userId=" + userId + ", balance=" + balance + ", user=" + user + "]";
+		return "Wallet [walletId=" + walletId + ", balance=" + balance + ", user=" + user + "]";
 	}
 
 }

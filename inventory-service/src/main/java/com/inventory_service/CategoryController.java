@@ -16,9 +16,9 @@ public class CategoryController {
 		this.categoryService = categoryService;
 	}
 	
-	@PostMapping("/addProductToCategory/{categoryId}/{product}")
-	public Category addProductToCategory(@PathVariable Integer categoryId,@PathVariable Product product) {
-		return categoryService.addProductToCategory(categoryId, product);
+	@PostMapping("/addProductToCategory/{categoryId}/{productId}")
+	public Category addProductToCategory(@PathVariable Integer categoryId,@PathVariable Integer productId) {
+		return categoryService.addProductToCategory(categoryId, productId);
 	}
 	
 

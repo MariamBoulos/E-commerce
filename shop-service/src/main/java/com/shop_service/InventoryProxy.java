@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
-@FeignClient(name="inventory-service",url="http://localhost:8300")
+@FeignClient(name="inventory-service")
 public interface InventoryProxy {
 	
-	@PostMapping("/createProduct/{product}")
+	@PostMapping("/createProduct")
 	public ProductInfo createProduct(@RequestBody ProductInfo product);
 	
 	@GetMapping("/getProduct/{productId}")

@@ -7,6 +7,7 @@ import java.util.List;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity(name="order")
 public class Order {
@@ -19,19 +20,23 @@ public class Order {
 	@GeneratedValue
 	private Integer orderId;
 	
+	private Integer userId;
+	
 	private BigDecimal total;
 	
 	private OrderStatus status;
 	
 	private OrderCurrency currency;
 	
+	@OneToMany(mappedBy = "order")
 	private List<OrderProduct> orderProducts;
 	
 	private LocalDateTime intial;
 
-	public Order(Integer orderId, BigDecimal total, OrderStatus status, OrderCurrency currency, LocalDateTime intial) {
+	public Order(Integer orderId,Integer userId, BigDecimal total, OrderStatus status, OrderCurrency currency, LocalDateTime intial) {
 		super();
 		this.orderId = orderId;
+		this.userId=userId;
 		this.total = total;
 		this.status = status;
 		this.currency = currency;
@@ -80,8 +85,8 @@ public class Order {
 
 	@Override
 	public String toString() {
-		return "Order [orderId=" + orderId + ", total=" + total + ", status=" + status + ", currency=" + currency
-				+ ", intial=" + intial + "]";
+		return "Order [orderId=" + orderId + ", userId=" + userId + ", total=" + total + ", status=" + status
+				+ ", currency=" + currency + ", orderProducts=" + orderProducts + ", intial=" + intial + "]";
 	}
 
 	public List<OrderProduct> getOrderProducts() {
@@ -90,6 +95,14 @@ public class Order {
 
 	public void setOrderProducts(List<OrderProduct> orderProducts) {
 		this.orderProducts = orderProducts;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 }

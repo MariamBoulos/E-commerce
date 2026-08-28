@@ -1,11 +1,14 @@
 package com.wallet_service;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -31,6 +34,9 @@ public class User {
 	@Size(min=8, max=100)
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
+	
+	@OneToMany(mappedBy = "user")
+	private List<Wallet> wallets;
 
 	public User(Integer userId, String email,String username, String password) {
 		super();

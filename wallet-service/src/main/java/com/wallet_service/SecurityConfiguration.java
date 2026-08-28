@@ -31,7 +31,12 @@ public class SecurityConfiguration {
         .csrf(csrf -> csrf.disable())
 
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/login", "/users").permitAll()
+            .requestMatchers(
+            		"/wallet/**",
+                    "/deposit/**",
+                    "/withdrawal/**",
+                    "/history/**")
+            .permitAll()
             .anyRequest().authenticated()
         )
 

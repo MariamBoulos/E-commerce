@@ -11,22 +11,23 @@ import org.springframework.stereotype.Service;
 public class PaymentService {
 	
 	@Autowired
-	 private final WalletProxy walletProxy;
-
-	public PaymentService(WalletProxy walletProxy) {
+	private final WalletServiceClient walletServiceClient;
+	
+	public PaymentService(WalletServiceClient walletServiceClient) {
 		super();
-		this.walletProxy = walletProxy;
+		this.walletServiceClient = walletServiceClient;
+
 	}
 
 	public void pay(Integer orderId,BigDecimal amount) {
 		Payment payment = new Payment();
 		payment.setStart(LocalDateTime.now());
-		walletProxy.withdrawal(amount, orderId);
+		walletServiceClient.withdrawal(amount, orderId);
 		payment.setEnd(LocalDateTime.now());
 	}
 	
 	public void refund(Integer orderId,BigDecimal amount) {
-		walletProxy.deposit(amount, orderId);
+		walletServiceClient.deposit(amount, orderId);
 	}
 	
 	

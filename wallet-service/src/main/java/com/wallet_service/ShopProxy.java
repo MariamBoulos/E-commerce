@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 
 
-@FeignClient(name="shop-service",url="http://localhost:8200")
+@FeignClient(name="shop-service")
 public interface ShopProxy {
 	
 	@GetMapping("/cart/{id}")
-	public Optional<CartInfo> getCartById(@PathVariable Integer userId);
+	public Optional<CartInfo> getCartById(@PathVariable("id") Integer userId);
 	
 	@PostMapping("/createCart/{id}")
-	public CartInfo createCart(@PathVariable Integer userId);
+	public CartInfo createCart(@PathVariable("id")  Integer userId);
 	
 	@DeleteMapping("/deleteCart/{id}")
-	public void deleteCartByUserId(@PathVariable Integer userId);
+	public void deleteCartByUserId(@PathVariable("id")  Integer userId);
 	
 	
 

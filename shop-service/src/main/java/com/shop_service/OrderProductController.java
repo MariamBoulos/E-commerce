@@ -16,7 +16,7 @@ public class OrderProductController {
 		this.orderProductService = orderProductService;
 	}
 	
-	@PostMapping("/addProductToOrder/{orderId}/{quantity}/{cartProductId")
+	@PostMapping("/addProductToOrder/{orderId}/{quantity}/{cartProductId}")
 	public OrderProduct addProductToOrder(@PathVariable Integer orderId,@PathVariable Integer quantity,@PathVariable Integer cartProductId) {
 		return orderProductService.addToOrder(orderId, quantity, cartProductId);
 	}

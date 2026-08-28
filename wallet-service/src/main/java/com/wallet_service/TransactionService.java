@@ -18,7 +18,7 @@ public class TransactionService {
 	    }
 	
 	    public void deposit(Integer userId, BigDecimal amount) {
-	        Wallet wallet = walletRepo.findByUserId(userId);
+	        Wallet wallet = walletRepo.findByUser_UserId(userId);
 	        BigDecimal balance = wallet.getBalance();
 	        balance = balance.add(amount);
 	        wallet.setBalance(balance);
@@ -34,7 +34,7 @@ public class TransactionService {
 	    }
 	    
 	    public void withdraw(Integer userId, BigDecimal amount) {
-	        Wallet wallet = walletRepo.findByUserId(userId);
+	        Wallet wallet = walletRepo.findByUser_UserId(userId);
 	        BigDecimal balance = wallet.getBalance();
 	        if (balance.compareTo(amount) < 0) {
 	            throw new RuntimeException("Insufficient balance");
@@ -54,7 +54,7 @@ public class TransactionService {
 	    
 	    public List<Transaction> getHistory(Integer userId) {
 
-	        return transactionRepo.findByWalletUserId(userId);
+	        return transactionRepo.findByWallet_User_UserId(userId);
 	    }
 	
 

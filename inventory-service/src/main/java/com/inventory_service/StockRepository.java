@@ -1,11 +1,10 @@
 package com.inventory_service;
 
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StockRepository extends JpaRepository<Stock, Integer> {
 	
-	Optional<Stock> findByProductProductId(Integer productId);
+	Stock findByProductProductId(Integer productId);
 
 }

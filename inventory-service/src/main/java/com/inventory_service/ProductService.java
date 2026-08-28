@@ -38,10 +38,9 @@ public class ProductService {
 	public void deleteProduct(Integer productId) {
 
 	    Product product = productRepo.findById(productId).orElseThrow();
-	    Stock stock = stockRepo.findByProductProductId(productId).orElseThrow();
+	    Stock stock = stockRepo.findByProductProductId(productId);
 	    stockRepo.delete(stock);
 	    productRepo.delete(product);
 	}
-	
 	
 }

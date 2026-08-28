@@ -28,7 +28,7 @@ public class CartProductController {
 		cartProductService.addQuantity(cartProductId, quantity);
 	}
 	
-	@DeleteMapping("/deleteProductInCart/{id}/{productId")
+	@DeleteMapping("/deleteProductInCart/{id}/{productId}")
 	public void deleteProductInCart(@PathVariable Integer userId,@PathVariable Integer productId) {
 		cartProductService.deleteProduct(userId, productId);
 	}

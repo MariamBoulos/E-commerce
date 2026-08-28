@@ -11,17 +11,17 @@ public class OrderService {
 	private final OrderProductRepository orderProductRepo;
 	private final CartProductRepository cartProductRepo;
 	private final OrderProductService orderProductService;
-	private final InventoryProxy inventoryProxy;
+	private final InventoryServiceClient inventoryServiceClient;
 	
 	public OrderService(OrderRepository orderRepo,OrderProductRepository orderProductRepo,
 			CartProductRepository cartProductRepo,OrderProductService orderProductService,
-			InventoryProxy inventoryProxy) {
+			InventoryServiceClient inventoryServiceClient) {
 		super();
 		this.orderRepo = orderRepo;
 		this.orderProductRepo = orderProductRepo;
 		this.cartProductRepo = cartProductRepo;
 		this.orderProductService = orderProductService;
-		this.inventoryProxy = inventoryProxy;
+		this.inventoryServiceClient = inventoryServiceClient;
 	}
 
 	public Order createOrder(Integer userId) {
@@ -34,7 +34,7 @@ public class OrderService {
 		        orderProduct.setOrder(order1);
 		        orderProduct.setProductId(cartProduct.getProductId());
 		        orderProduct.setQuantity(cartProduct.getQuantity());
-		        inventoryProxy.removeFromStock(userId, userId);
+		        inventoryServiceClient.removeFromStock(userId, userId);
 		        orderProductRepo.save(orderProduct);
 		}
 		
@@ -44,7 +44,7 @@ public class OrderService {
 	public void deleteOrder(Integer userId,Integer orderId) {
 		Order order = orderRepo.findByUserIdAndOrderId(userId, orderId).orElseThrow();
 		orderProductService.deleteOrderProducts(orderId);
-		inventoryProxy.addToStock(userId, orderId);
+		inventoryServiceClient.addToStock(userId, orderId);
 	    orderRepo.delete(order);		
 	}
 	

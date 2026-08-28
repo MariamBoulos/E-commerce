@@ -23,7 +23,10 @@ public class SecurityConfiguration {
             .csrf(csrf -> csrf.disable())
 
             .authorizeHttpRequests(auth -> auth
-                .anyRequest().authenticated()
+            	    .requestMatchers("/createCart/**",
+            	    		"/deleteCart/**","/cart/**")
+            	    .permitAll()
+            	    .anyRequest().authenticated()
             )
 
             .addFilterBefore(
