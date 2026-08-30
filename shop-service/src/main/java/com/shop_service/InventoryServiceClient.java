@@ -64,6 +64,20 @@ public class InventoryServiceClient {
                 }
         );
     }
+    
+    public StockInfo getStock(Integer productId) {
+
+        CircuitBreaker circuitBreaker =
+                circuitBreakerFactory.create("inventory-service");
+
+        return circuitBreaker.run(
+                () -> inventoryProxy.getStock(productId),
+                throwable -> {
+                    System.out.println("Inventory service is unavailable.");
+                    return null;
+                }
+        );
+    }
 
     public void addToStock(Integer productId, Integer amount) {
 

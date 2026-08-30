@@ -30,6 +30,8 @@ public class User {
 	@Size(min=2, message="Name should have at least 2 characters")
 	private String username;
 	
+	private String name;
+	
 	@NotBlank
 	@Size(min=8, max=100)
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -38,7 +40,7 @@ public class User {
 	@OneToMany(mappedBy = "user")
 	private List<Wallet> wallets;
 
-	public User(Integer userId, String email,String username, String password) {
+	public User(Integer userId, String email,String username, String password, String name) {
 		super();
 		this.userId = userId;
 		this.email = email;
@@ -82,6 +84,14 @@ public class User {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

@@ -26,7 +26,7 @@ public class Transaction {
 	private LocalDateTime timestamp;
 	
 	@ManyToOne
-	@JoinColumn(name = "wallet_id", referencedColumnName = "user_id", nullable = false)
+	@JoinColumn(name = "wallet_id", nullable = false)
 	private Wallet wallet;
 
 	public Transaction(BigDecimal amount, LocalDateTime timestamp

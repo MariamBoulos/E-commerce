@@ -1,6 +1,7 @@
 package com.inventory_service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +25,11 @@ public class StockController {
 	@PostMapping("/addToStock/{productId}/{amount}")
 	public void addToStock(@PathVariable Integer productId, @PathVariable Integer amount ) {
 		stockService.addToStock(productId, amount);
+	}
+	
+	@GetMapping("/getStock/{productId}")
+	public Stock getStock(@PathVariable Integer productId) {
+	    return stockService.getStock(productId);
 	}
 
 }

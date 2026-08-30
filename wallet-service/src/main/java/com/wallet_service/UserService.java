@@ -26,9 +26,7 @@ public class UserService {
 	public User createUser(User user) {
     	user.setPassword(passwordEncoder.encode(user.getPassword()));
     	User saved= userRepository.save(user);
-    	walletService.createWallet(saved);
     	shopServiceClient.createCart(user.getUserId());
-                
     	return saved;        
     }
     
@@ -42,7 +40,7 @@ public class UserService {
     
     public void deleteUser(Integer userId) {
     	userRepository.deleteById(userId);
-    	walletService.deleteWalletByUserId(userId);
+    	walletService.deleteAllWalletsByUserId(userId);
     	shopServiceClient.deleteCartByUserId(userId);
     }
     

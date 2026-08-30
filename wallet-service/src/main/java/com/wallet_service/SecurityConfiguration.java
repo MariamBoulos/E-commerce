@@ -32,10 +32,8 @@ public class SecurityConfiguration {
 
         .authorizeHttpRequests(auth -> auth
             .requestMatchers(
-            		"/wallet/**",
-                    "/deposit/**",
-                    "/withdrawal/**",
-                    "/history/**")
+            		"/login",
+            		"/users")
             .permitAll()
             .anyRequest().authenticated()
         )

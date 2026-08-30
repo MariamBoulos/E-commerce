@@ -1,5 +1,6 @@
 package com.shop_service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -9,20 +10,28 @@ public class CartProductService {
 	
 	private final CartProductRepository cartProductRepo;
 	private final CartRepository cartRepo;
+	private final InventoryServiceClient inventoryServiceClient;
 
-	public CartProductService(CartProductRepository cartProductRepo,CartRepository cartRepo ) {
+	public CartProductService(CartProductRepository cartProductRepo,CartRepository cartRepo,InventoryServiceClient inventoryServiceClient ) {
 		super();
 		this.cartProductRepo = cartProductRepo;
 		this.cartRepo = cartRepo;
+		this.inventoryServiceClient = inventoryServiceClient;
 		
 	}
 	
 	public CartProduct addProduct(Integer userId, Integer productId, Integer quantity) {
         Cart cart = cartRepo.findByUserId(userId).orElseThrow();
+        StockInfo stock = inventoryServiceClient.getStock(productId);
         Optional<CartProduct> existing =cartProductRepo.findByCartUserIdAndProductId(userId, productId);
+        int requestedQuantity = quantity;
 
         if (existing.isPresent()) {
             return addQuantity(existing.get().getCartProductId(), quantity);}
+        
+        if (stock == null || stock.getAvailable() < requestedQuantity) {
+            throw new RuntimeException("Not enough stock available.");
+        }
         
         CartProduct cartProduct = new CartProduct();
         cartProduct.setProductId(productId);
@@ -42,5 +51,9 @@ public class CartProductService {
 		CartProduct cartProduct = cartProductRepo.findByCartUserIdAndProductId(userId, productId).orElseThrow();
 	    cartProductRepo.delete(cartProduct);	
 	    }
+	
+	public List<CartProduct> getCartProducts(Integer userId) {
+	    return cartProductRepo.findByCartUserId(userId);
+	}
 
 }

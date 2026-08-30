@@ -15,8 +15,8 @@ public class CartService {
 	}
 	
 	public Cart createCart(Integer userId) {
-		Cart cart1=new Cart(userId,null);
-		return cartRepo.save(cart1);
+		Cart cart=new Cart(userId);
+		return cartRepo.save(cart);
 	}
 	
 	public void deleteCartByUserId(Integer userId) {

@@ -51,6 +51,11 @@ public class OrderService {
 	public List<Order> allOrders(Integer userId){
 		 return orderRepo.findByUserId(userId);
 	}
+	
+	public Order getOrder(Integer userId, Integer orderId) {
+	    return orderRepo.findByUserIdAndOrderId(userId, orderId).orElseThrow();
+	}
+	
 }
 
 

@@ -62,7 +62,6 @@ public class JwtFilter extends OncePerRequestFilter {
             }
 
         } catch (Exception e) {
-            // Invalid JWT — request remains unauthenticated
         }
 
         filterChain.doFilter(request, response);

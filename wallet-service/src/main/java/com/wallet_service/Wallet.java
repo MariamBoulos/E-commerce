@@ -10,7 +10,7 @@ import jakarta.persistence.ManyToOne;
 
 @Entity(name="wallet")
 public class Wallet {
-	
+
 	protected Wallet() {
 		
     }
@@ -45,6 +45,14 @@ public class Wallet {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	public Integer getWalletId() {
+		return walletId;
+	}
+
+	public void setWalletId(Integer walletId) {
+		this.walletId = walletId;
 	}
 
 	@Override

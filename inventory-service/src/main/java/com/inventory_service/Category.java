@@ -1,8 +1,12 @@
 package com.inventory_service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,13 +25,17 @@ public class Category {
 	@GeneratedValue
 	private Integer categoryId;
 	
-	@OneToMany
+	@OneToMany(mappedBy = "category")
+	@JsonManagedReference
 	private List<Product> products = new ArrayList<>();
 	
 	@Column(unique = true)
 	private String name;
 	
 	private LocalDate created;
+	
+	 @Column(name = "last_updated")
+	 private LocalDateTime lastUpdated;
 
 	public Category(Integer categoryId, List<Product> products, String name, LocalDate created) {
 		super();
@@ -67,6 +75,15 @@ public class Category {
 
 	public void setCreated(LocalDate created) {
 		this.created = created;
+	}
+	
+
+	public LocalDateTime getLastUpdated() {
+		return lastUpdated;
+	}
+
+	public void setLastUpdated(LocalDateTime lastUpdated) {
+		this.lastUpdated = lastUpdated;
 	}
 
 	@Override

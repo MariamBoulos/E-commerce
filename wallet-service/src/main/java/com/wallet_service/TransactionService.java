@@ -17,8 +17,8 @@ public class TransactionService {
 	        this.transactionRepo=transactionRepo;
 	    }
 	
-	    public void deposit(Integer userId, BigDecimal amount) {
-	        Wallet wallet = walletRepo.findByUser_UserId(userId);
+	    public void deposit(Integer walletId, BigDecimal amount) {
+	    	Wallet wallet = walletRepo.findById(walletId).orElseThrow(() -> new RuntimeException("Wallet not found"));
 	        BigDecimal balance = wallet.getBalance();
 	        balance = balance.add(amount);
 	        wallet.setBalance(balance);
@@ -33,8 +33,8 @@ public class TransactionService {
 	        transactionRepo.save(transaction);
 	    }
 	    
-	    public void withdraw(Integer userId, BigDecimal amount) {
-	        Wallet wallet = walletRepo.findByUser_UserId(userId);
+	    public void withdraw(Integer walletId, BigDecimal amount) {
+	    	Wallet wallet = walletRepo.findById(walletId).orElseThrow(() -> new RuntimeException("Wallet not found"));
 	        BigDecimal balance = wallet.getBalance();
 	        if (balance.compareTo(amount) < 0) {
 	            throw new RuntimeException("Insufficient balance");

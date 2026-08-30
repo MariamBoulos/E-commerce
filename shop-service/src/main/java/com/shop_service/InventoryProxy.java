@@ -23,5 +23,8 @@ public interface InventoryProxy {
 	
 	@PostMapping("/addToStock/{productId}/{amount}")
 	public void addToStock(@PathVariable("productId") Integer productId, @PathVariable("amount") Integer amount );
+	
+	@GetMapping("/getStock/{productId}")
+	public StockInfo getStock(@PathVariable("productId") Integer productId);
 
 }

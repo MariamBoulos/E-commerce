@@ -20,17 +20,17 @@ public class CartController {
 		this.cartService = cartService;
 	}
 	
-	@GetMapping("/cart/{id}")
+	@GetMapping("/cart/{userId}")
 	public Optional<Cart> getCartById(@PathVariable Integer userId) {
 		return cartService.findByUserUserId(userId);
 	}
 	
-	@PostMapping("/createCart/{id}")
+	@PostMapping("/createCart/{userId}")
 	public Cart createCart(@PathVariable Integer userId) {
 		return cartService.createCart(userId);
 	}
 	
-	@DeleteMapping("/deleteCart/{id}")
+	@DeleteMapping("/deleteCart/{userId}")
 	public void deleteCart(@PathVariable Integer userId) {
 		cartService.deleteCartByUserId(userId);
 	}

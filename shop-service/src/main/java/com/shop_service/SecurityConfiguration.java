@@ -23,8 +23,8 @@ public class SecurityConfiguration {
             .csrf(csrf -> csrf.disable())
 
             .authorizeHttpRequests(auth -> auth
-            	    .requestMatchers("/createCart/**",
-            	    		"/deleteCart/**","/cart/**")
+            	    .requestMatchers(
+            	    		"/cart/**", "/createCart/**", "/deleteCart/**")
             	    .permitAll()
             	    .anyRequest().authenticated()
             )

@@ -2,6 +2,8 @@ package com.inventory_service;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -23,10 +25,15 @@ public class Product {
 	
 	private BigDecimal price;
 	
+	private String imageUrl;
+	
+	private ProductCurrency currency;
+	
 	@ManyToOne
-	@JoinColumn(name = "category_id", nullable = false)
+	@JoinColumn(name = "category_id", nullable = true)
+	@JsonBackReference
 	private Category category;
-
+	
 	public Product(Integer productId, String description, BigDecimal price) {
 		super();
 		this.productId = productId;
@@ -71,5 +78,23 @@ public class Product {
 	public String toString() {
 		return "Product [productId=" + productId + ", description=" + description + ", price=" + price + "]";
 	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
+	public ProductCurrency getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(ProductCurrency currency) {
+		this.currency = currency;
+	}
+
+	
 
 }

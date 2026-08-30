@@ -34,5 +34,10 @@ public class OrderController {
 	public List<Order> getAllOrdersforUser(@PathVariable Integer userId){
 		return orderService.allOrders(userId);
 	}
+	
+	@GetMapping("/getOrder/{userId}/{orderId}")
+	public Order getOrder(@PathVariable Integer userId,@PathVariable Integer orderId) {
+	    return orderService.getOrder(userId, orderId);
+	}
 
 }

@@ -26,8 +26,12 @@ public class ShopServiceClient {
         return circuitBreaker.run(
                 () -> shopProxy.createCart(userId),
                 throwable -> {
-                    System.out.println("Shop service is unavailable.");
+                    throwable.printStackTrace();
                     return null;
+                
+                /*throwable -> {
+                    System.out.println("Shop service is unavailable.");
+                    return null;*/
                 }
         );
     }

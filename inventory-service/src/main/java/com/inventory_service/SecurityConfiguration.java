@@ -24,10 +24,7 @@ public class SecurityConfiguration {
 
             .authorizeHttpRequests(auth -> auth
             	    .requestMatchers(
-            	        "/createProduct/**",
-            	        "/getProduct/**",
-            	        "/addToStock/**",
-            	        "/removeFromStock/**"
+            	        "/createProduct/**"
             	    )
             	    .permitAll()
             	    .anyRequest().authenticated()
