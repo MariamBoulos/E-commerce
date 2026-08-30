@@ -2,14 +2,17 @@ package com.shop_service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
-@Entity(name="order")
+@Entity(name="orders")
 public class Order {
 	
 	public Order() {
@@ -29,7 +32,8 @@ public class Order {
 	private OrderCurrency currency;
 	
 	@OneToMany(mappedBy = "order")
-	private List<OrderProduct> orderProducts;
+	@JsonManagedReference
+	private List<OrderProduct> orderProducts = new ArrayList<>();
 	
 	private LocalDateTime intial;
 

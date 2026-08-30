@@ -2,7 +2,6 @@ package com.wallet_service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +19,7 @@ public class WalletController {
 	}
 
 
-	@PostMapping("/wallet/{userId}")
+	@PostMapping("/createWallet/{userId}")
 	public Map<String, Object> createWallet(@PathVariable Integer userId) {
 
 	    Wallet wallet = walletService.createWallet(userId);
@@ -28,7 +27,8 @@ public class WalletController {
 	    return Map.of(
 	        "walletId", wallet.getWalletId(),
 	        "userId", wallet.getUser().getUserId(),
-	        "balance", wallet.getBalance()
+	        "balance", wallet.getBalance(),
+	        "created", wallet.getCreated()
 	    );
 	}
 	
@@ -52,6 +52,7 @@ public class WalletController {
 	                result.put("walletId", wallet.getWalletId());
 	                result.put("userId", wallet.getUser().getUserId());
 	                result.put("balance", wallet.getBalance());
+	                result.put("created", wallet.getCreated());
 	                return result;
 	            })
 	            .toList();

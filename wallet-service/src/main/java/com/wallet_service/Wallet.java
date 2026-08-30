@@ -1,6 +1,7 @@
 package com.wallet_service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,6 +21,8 @@ public class Wallet {
 	private Integer walletId;
 	
 	private BigDecimal balance;
+	
+	private LocalDateTime created;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
@@ -53,6 +56,14 @@ public class Wallet {
 
 	public void setWalletId(Integer walletId) {
 		this.walletId = walletId;
+	}
+
+	public LocalDateTime getCreated() {
+		return created;
+	}
+
+	public void setCreated(LocalDateTime created) {
+		this.created = created;
 	}
 
 	@Override

@@ -2,6 +2,8 @@ package com.shop_service;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -29,7 +31,8 @@ public class OrderProduct {
 	private BigDecimal price;
 	
 	@ManyToOne
-	@JoinColumn(name = "order_id", nullable = false)
+	@JoinColumn(name = "order_id")
+	@JsonBackReference
 	private Order order;
 
 	public OrderProduct(Integer orderProductId, Integer productId, Integer quantity, BigDecimal price, Order order) {

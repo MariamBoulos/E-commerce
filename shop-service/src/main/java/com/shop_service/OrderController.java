@@ -20,17 +20,17 @@ public class OrderController {
 		this.orderService = orderService;
 	}
 	
-	@PostMapping("/createOrder/{id}")
-	public Order createOrder(@PathVariable Integer userId) {
-		return orderService.createOrder(userId);
+	@PostMapping("/createOrder/{userId}/{walletId}")
+	public Order createOrder(@PathVariable Integer userId, @PathVariable Integer walletId) {
+		return orderService.createOrder(userId,walletId);
 	}
 	
-	@DeleteMapping("/deleteOrder/{id}/{orderId}")
+	@DeleteMapping("/deleteOrder/{userId}/{orderId}")
 	public void deleteOrder(@PathVariable Integer userId,@PathVariable Integer orderId) {
 		orderService.deleteOrder(userId, orderId);
 	}
 	
-	@GetMapping("/getAllOrdersforUser/{id}")
+	@GetMapping("/getAllOrdersforUser/{userId}")
 	public List<Order> getAllOrdersforUser(@PathVariable Integer userId){
 		return orderService.allOrders(userId);
 	}

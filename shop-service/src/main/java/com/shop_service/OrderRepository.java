@@ -9,4 +9,5 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	
 	List<Order> findByUserId(Integer userId);
 	Optional<Order> findByUserIdAndOrderId(Integer userId, Integer orderId);
+	boolean existsByUserIdAndStatus(Integer userId, OrderStatus delayed);
 }

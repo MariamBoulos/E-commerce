@@ -18,19 +18,19 @@ public class TransactionController {
 		this.service = service;
 	}
 
-	@PostMapping("/deposit/{id}/{amount}")
-	public void deposit(@PathVariable BigDecimal amount, @PathVariable Integer id) {
-		service.deposit(id, amount);
+	@PostMapping("/deposit/{userId}/{walletId}/{amount}")
+	public void deposit(@PathVariable Integer userId,@PathVariable Integer walletId ,@PathVariable BigDecimal amount) {
+		service.deposit(userId, walletId,amount);
 	}
 	
-	@PostMapping("/withdrawal/{id}/{amount}")
-	public void withdrawal(@PathVariable BigDecimal amount, @PathVariable Integer id) {
-		service.withdraw(id, amount);
+	@PostMapping("/withdrawal/{userId}/{walletId}/{amount}")
+	public void withdrawal(@PathVariable Integer userId,@PathVariable Integer walletId,@PathVariable BigDecimal amount) {
+		service.withdraw(userId, walletId,amount);
 	}
 	
-	@GetMapping("/history/{id}")
-	public List<Transaction> history(@PathVariable Integer id){
-		return service.getHistory(id);
+	@GetMapping("/history/{userId}")
+	public List<Transaction> history(@PathVariable Integer userId){
+		return service.getHistory(userId);
 	}
 
 }

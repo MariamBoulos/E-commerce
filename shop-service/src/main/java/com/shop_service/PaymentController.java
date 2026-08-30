@@ -18,14 +18,16 @@ public class PaymentController {
 		this.paymentService = paymentService;
 	}
 	
-	@PostMapping("/payOrder/{orderId}/{amount}")
-	public void payOrder(@PathVariable Integer orderId,@PathVariable BigDecimal amount) {
-		paymentService.pay(orderId, amount);
+	@PostMapping("/payOrder/{userId}/{walletId}/{orderId}/{amount}")
+	public void payOrder(@PathVariable Integer userId,@PathVariable Integer walletId,@PathVariable Integer orderId,
+            @PathVariable BigDecimal amount) {
+		paymentService.pay(userId, walletId, orderId, amount);
 	}
 	
 	@PostMapping("/refundOrder/{orderId}/{amount}")
-	public void refundOrder(@PathVariable Integer orderId,@PathVariable BigDecimal amount) {
-		paymentService.refund(orderId, amount);
+	public void refundOrder(@PathVariable Integer userId,@PathVariable Integer walletId,@PathVariable Integer orderId,
+            @PathVariable BigDecimal amount) {
+		paymentService.refund(userId, walletId, orderId, amount);
 	}
 }
 

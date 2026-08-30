@@ -4,15 +4,15 @@ public class StockInfo {
 
     private Integer stockId;
     private Integer available;
-    private Integer productId;
+    private ProductInfo product;
 
     public StockInfo() {
     }
 
-    public StockInfo(Integer stockId, Integer available, Integer productId) {
+    public StockInfo(Integer stockId, Integer available, ProductInfo product) {
         this.stockId = stockId;
         this.available = available;
-        this.productId = productId;
+        this.product = product;
     }
 
     public Integer getStockId() {
@@ -31,18 +31,18 @@ public class StockInfo {
         this.available = available;
     }
 
-    public Integer getProductId() {
-        return productId;
+    public ProductInfo getProduct() {
+        return product;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setProduct(ProductInfo product) {
+        this.product = product;
     }
 
     @Override
     public String toString() {
         return "StockInfo [stockId=" + stockId
                 + ", available=" + available
-                + ", productId=" + productId + "]";
+                + ", product=" + product + "]";
     }
 }

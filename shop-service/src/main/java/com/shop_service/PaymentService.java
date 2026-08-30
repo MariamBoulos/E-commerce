@@ -19,15 +19,15 @@ public class PaymentService {
 
 	}
 
-	public void pay(Integer orderId,BigDecimal amount) {
+	public void pay(Integer userId, Integer walletId, Integer orderId, BigDecimal amount) {
 		Payment payment = new Payment();
 		payment.setStart(LocalDateTime.now());
-		walletServiceClient.withdrawal(amount, orderId);
+		walletServiceClient.withdrawal(userId, walletId, amount);
 		payment.setEnd(LocalDateTime.now());
 	}
 	
-	public void refund(Integer orderId,BigDecimal amount) {
-		walletServiceClient.deposit(amount, orderId);
+	public void refund(Integer userId, Integer walletId, Integer orderId, BigDecimal amount) {
+		walletServiceClient.deposit(userId, walletId, amount);
 	}
 	
 	

@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 @FeignClient(name="wallet-service")
 public interface WalletProxy {
 	
-	@GetMapping("/wallet/{id}")
-	public Optional<WalletInfo> getWallet(@PathVariable Integer id);
+	@GetMapping("/wallet/{walletId}")
+	public Optional<WalletInfo> getWallet(@PathVariable Integer walletId);
 	
-	@PostMapping("/deposit/{id}/{amount}")
-	public void deposit(@PathVariable BigDecimal amount, @PathVariable Integer id);
+	@PostMapping("/deposit/{userId}/{walletId}/{amount}")
+	public void deposit( @PathVariable Integer userId,@PathVariable Integer walletId,@PathVariable BigDecimal amount);
 	
-	@PostMapping("/withdrawal/{id}/{amount}")
-	public void withdrawal(@PathVariable BigDecimal amount, @PathVariable Integer id);
+	@PostMapping("/withdrawal/{userId}/{walletId}/{amount}")
+	public void withdrawal(@PathVariable Integer userId,@PathVariable Integer walletId, @PathVariable BigDecimal amount);
 	
-	@GetMapping("/history/{id}")
-	public List<TransactionInfo> history(@PathVariable Integer id);
+	@GetMapping("/history/{userId}")
+	public List<TransactionInfo> history(@PathVariable Integer userId);
 	
 	}
 

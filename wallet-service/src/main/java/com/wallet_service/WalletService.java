@@ -1,6 +1,7 @@
 package com.wallet_service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +22,7 @@ public class WalletService {
 	public Wallet createWallet(Integer userId) {
 		User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         Wallet wallet = new Wallet(BigDecimal.ZERO, user);
+        wallet.setCreated(LocalDateTime.now());
         return walletRepo.save(wallet);
 	}
 	

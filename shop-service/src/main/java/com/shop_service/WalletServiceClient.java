@@ -3,7 +3,6 @@ package com.shop_service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.stereotype.Service;
@@ -22,28 +21,18 @@ public class WalletServiceClient {
         this.circuitBreakerFactory = circuitBreakerFactory;
     }
 
-    public Optional<WalletInfo> getWallet(Integer userId) {
-
-        CircuitBreaker circuitBreaker =
-                circuitBreakerFactory.create("wallet-service");
-
-        return circuitBreaker.run(
-                () -> walletProxy.getWallet(userId),
-                throwable -> {
-                    System.out.println("Wallet service is unavailable.");
-                    return Optional.empty();
-                }
-        );
+    public Optional<WalletInfo> getWallet(Integer walletId) {
+    	 return walletProxy.getWallet(walletId);
     }
 
-    public void deposit(BigDecimal amount, Integer userId) {
+    public void deposit(Integer userId, Integer walletId, BigDecimal amount) {
 
         CircuitBreaker circuitBreaker =
                 circuitBreakerFactory.create("wallet-service");
 
         circuitBreaker.run(
                 () -> {
-                    walletProxy.deposit(amount, userId);
+                    walletProxy.deposit(userId, walletId,amount);
                     return null;
                 },
                 throwable -> {
@@ -53,14 +42,14 @@ public class WalletServiceClient {
         );
     }
 
-    public void withdrawal(BigDecimal amount, Integer userId) {
+    public void withdrawal(Integer userId, Integer walletId, BigDecimal amount) {
 
         CircuitBreaker circuitBreaker =
                 circuitBreakerFactory.create("wallet-service");
 
         circuitBreaker.run(
                 () -> {
-                    walletProxy.withdrawal(amount, userId);
+                    walletProxy.withdrawal(userId, walletId, amount);
                     return null;
                 },
                 throwable -> {

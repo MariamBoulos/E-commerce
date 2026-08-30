@@ -24,13 +24,20 @@ public class CartProductService {
         Cart cart = cartRepo.findByUserId(userId).orElseThrow();
         StockInfo stock = inventoryServiceClient.getStock(productId);
         Optional<CartProduct> existing =cartProductRepo.findByCartUserIdAndProductId(userId, productId);
-        int requestedQuantity = quantity;
+        int currentQuantity = 0;
 
         if (existing.isPresent()) {
-            return addQuantity(existing.get().getCartProductId(), quantity);}
-        
+            currentQuantity = existing.get().getQuantity();
+        }
+
+        int requestedQuantity = currentQuantity + quantity;
+
         if (stock == null || stock.getAvailable() < requestedQuantity) {
             throw new RuntimeException("Not enough stock available.");
+        }
+
+        if (existing.isPresent()) {
+            return addQuantity(existing.get().getCartProductId(), quantity);
         }
         
         CartProduct cartProduct = new CartProduct();
