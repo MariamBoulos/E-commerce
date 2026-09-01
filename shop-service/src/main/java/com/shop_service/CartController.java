@@ -4,9 +4,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,19 +19,19 @@ public class CartController {
 		this.cartService = cartService;
 	}
 	
-	@GetMapping("/cart/{userId}")
-	public Optional<Cart> getCartById(@PathVariable Integer userId) {
-		return cartService.findByUserUserId(userId);
+	@PostMapping("/cart")
+	public Optional<Cart> getCartById(@RequestBody UserRequest request) {
+	    return cartService.findByUserUserId(request.getUserId());
 	}
 	
-	@PostMapping("/createCart/{userId}")
-	public Cart createCart(@PathVariable Integer userId) {
-		return cartService.createCart(userId);
+	@PostMapping("/createCart")
+	public Cart createCart(@RequestBody UserRequest request) {
+	    return cartService.createCart(request.getUserId());
 	}
 	
-	@DeleteMapping("/deleteCart/{userId}")
-	public void deleteCart(@PathVariable Integer userId) {
-		cartService.deleteCartByUserId(userId);
+	@DeleteMapping("/deleteCart")
+	public void deleteCart(@RequestBody UserRequest request) {
+	    cartService.deleteCartByUserId(request.getUserId());
 	}
 	
 	

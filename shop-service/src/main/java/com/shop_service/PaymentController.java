@@ -1,10 +1,8 @@
 package com.shop_service;
 
-import java.math.BigDecimal;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,17 +16,17 @@ public class PaymentController {
 		this.paymentService = paymentService;
 	}
 	
-	@PostMapping("/payOrder/{userId}/{walletId}/{orderId}/{amount}")
-	public void payOrder(@PathVariable Integer userId,@PathVariable Integer walletId,@PathVariable Integer orderId,
-            @PathVariable BigDecimal amount) {
-		paymentService.pay(userId, walletId, orderId, amount);
-	}
+	@PostMapping("/payOrder")
+    public void payOrder(@RequestBody PaymentRequest request) {
+        paymentService.pay(request.getUserId(),request.getWalletId(),request.getOrderId(),request.getAmount()
+        );
+    }
 	
-	@PostMapping("/refundOrder/{orderId}/{amount}")
-	public void refundOrder(@PathVariable Integer userId,@PathVariable Integer walletId,@PathVariable Integer orderId,
-            @PathVariable BigDecimal amount) {
-		paymentService.refund(userId, walletId, orderId, amount);
-	}
+	@PostMapping("/refundOrder")
+    public void refundOrder(@RequestBody PaymentRequest request) {
+        paymentService.refund(request.getUserId(),request.getWalletId(),request.getOrderId(),request.getAmount()
+        );
+    }
 }
 
 

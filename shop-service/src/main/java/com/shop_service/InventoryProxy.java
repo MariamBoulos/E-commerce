@@ -15,6 +15,10 @@ public interface InventoryProxy {
 	@PostMapping("/createProduct")
 	public ProductInfo createProduct(@RequestBody ProductInfo product);
 	
+	@PostMapping("/addProductToCart/{userId}/{productId}/{quantity}")
+	public void addProductToCart(@PathVariable Integer userId, @PathVariable Integer productId,
+			@PathVariable Integer quantity);
+	
 	@GetMapping("/getProduct/{productId}")
 	public Optional<ProductInfo> getProduct(@PathVariable("productId") Integer productId);
 	

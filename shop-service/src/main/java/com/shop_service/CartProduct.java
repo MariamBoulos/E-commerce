@@ -1,5 +1,7 @@
 package com.shop_service;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -26,6 +28,7 @@ public class CartProduct {
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
+	@JsonBackReference
 	private Cart cart;
 
 	public CartProduct(Integer cartProductId, Integer productId, Integer quantity, Cart cart) {

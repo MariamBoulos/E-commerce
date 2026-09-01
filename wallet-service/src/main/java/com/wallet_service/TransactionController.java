@@ -1,11 +1,8 @@
 package com.wallet_service;
 
-import java.math.BigDecimal;
 import java.util.List;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,19 +15,21 @@ public class TransactionController {
 		this.service = service;
 	}
 
-	@PostMapping("/deposit/{userId}/{walletId}/{amount}")
-	public void deposit(@PathVariable Integer userId,@PathVariable Integer walletId ,@PathVariable BigDecimal amount) {
-		service.deposit(userId, walletId,amount);
-	}
+	@PostMapping("/deposit")
+    public void deposit(@RequestBody TransactionRequest request) {
+        service.deposit(request.getUserId(),request.getWalletId(),request.getAmount()
+        );
+    }
 	
-	@PostMapping("/withdrawal/{userId}/{walletId}/{amount}")
-	public void withdrawal(@PathVariable Integer userId,@PathVariable Integer walletId,@PathVariable BigDecimal amount) {
-		service.withdraw(userId, walletId,amount);
-	}
+	@PostMapping("/withdrawal")
+    public void withdrawal(@RequestBody TransactionRequest request) {
+        service.withdraw(request.getUserId(),request.getWalletId(),request.getAmount()
+        );
+    }
 	
-	@GetMapping("/history/{userId}")
-	public List<Transaction> history(@PathVariable Integer userId){
-		return service.getHistory(userId);
-	}
+	@PostMapping("/history")
+    public List<Transaction> history(@RequestBody TransactionRequest request) {
+        return service.getHistory(request.getUserId());
+    }
 
 }

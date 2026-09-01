@@ -4,9 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,26 +19,29 @@ public class CartProductController {
 		this.cartProductService = cartProductService;
 	}
 	
-	@PostMapping("/addProductToCart/{userId}/{productId}/{quantity}")
-	public void addProductToCart(@PathVariable Integer userId, @PathVariable Integer productId,
-			@PathVariable Integer quantity) {
-		cartProductService.addProduct(userId, productId, quantity);
-	}
+	 @PostMapping("/addProductToCart")
+	    public void addProductToCart(@RequestBody CartProductRequest request) {
+	        cartProductService.addProduct(request.getUserId(), request.getProductId(),request.getQuantity()
+	        );
+	    }
 	
-	@PostMapping("/addQuantity/{cartProductId}/{quantity}")
-	public void addQuantity(@PathVariable Integer cartProductId,@PathVariable Integer quantity) {
-		cartProductService.addQuantity(cartProductId, quantity);
-	}
+	 @PostMapping("/addQuantity")
+	    public void addQuantity(@RequestBody CartProductRequest request) {
+	        cartProductService.addQuantity(request.getCartProductId(),request.getQuantity()
+	        );
+	    }
 	
-	@DeleteMapping("/deleteProductInCart/{userId}/{productId}")
-	public void deleteProductInCart(@PathVariable Integer userId,@PathVariable Integer productId) {
-		cartProductService.deleteProduct(userId, productId);
-	}
+	 @DeleteMapping("/deleteProductInCart")
+	    public void deleteProductInCart(@RequestBody CartProductRequest request) {
+	        cartProductService.deleteProduct(request.getUserId(),request.getProductId()
+	        );
+	    }
 	
-	@GetMapping("/cartProducts/{userId}")
-	public List<CartProduct> getCartProducts(@PathVariable Integer userId) {
-	    return cartProductService.getCartProducts(userId);
-	}
+	 @PostMapping("/cartProducts")
+	    public List<CartProduct> getCartProducts(@RequestBody UserRequest request) {
+	        return cartProductService.getCartProducts(request.getUserId());
+	    }
+
 	
 	
 

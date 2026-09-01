@@ -42,9 +42,9 @@ public class ProductController {
 	    return productService.createProduct(product, image);
 	}
 	
-	@GetMapping("/getProduct/{productId}")
-	public Optional<Product> getProduct(@PathVariable Integer productId) {
-		return productService.getProduct(productId);
+	@PostMapping("/getProduct")
+	public Optional<Product> getProduct(@RequestBody ProductRequest request) {
+	    return productService.getProduct(request.getProductId());
 	}
 	
 	@DeleteMapping("/deleteProduct/{productId}")

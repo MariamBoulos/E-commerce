@@ -22,9 +22,12 @@ public class CategoryController {
 		this.categoryService = categoryService;
 	}
 	
-	@PostMapping("/addProductToCategory/{categoryId}/{productId}")
-	public Category addProductToCategory(@PathVariable Integer categoryId,@PathVariable Integer productId) {
-		return categoryService.addProductToCategory(categoryId, productId);
+	@PostMapping("/addProductToCategory")
+	public Category addProductToCategory(@RequestBody CategoryProductRequest request) {
+	    return categoryService.addProductToCategory(
+	        request.getCategoryId(),
+	        request.getProductId()
+	    );
 	}
 	
 	@PutMapping("/updateCategory/{categoryId}")
@@ -37,9 +40,12 @@ public class CategoryController {
 		return categoryService.createCategory(category);
 	}
 	
-	@DeleteMapping("/removeProductFromCategory/{categoryId}/{productId}")
-	public void removeProductFromCategory(@PathVariable Integer categoryId,@PathVariable Integer productId){
-		 categoryService.removeProductFromCategory(categoryId, productId);
+	@DeleteMapping("/removeProductFromCategory")
+	public void removeProductFromCategory(@RequestBody CategoryProductRequest request) {
+	    categoryService.removeProductFromCategory(
+	        request.getCategoryId(),
+	        request.getProductId()
+	    );
 	}
 	
 	@GetMapping("/categories")

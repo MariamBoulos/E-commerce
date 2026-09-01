@@ -23,7 +23,7 @@ public class Product {
 	
 	private String description;
 	
-	private BigDecimal price;
+	private BigDecimal unitPrice;
 	
 	private String imageUrl;
 	
@@ -34,11 +34,11 @@ public class Product {
 	@JsonBackReference
 	private Category category;
 	
-	public Product(Integer productId, String description, BigDecimal price) {
+	public Product(Integer productId, String description, BigDecimal unitPrice) {
 		super();
 		this.productId = productId;
 		this.description = description;
-		this.price = price;
+		this.unitPrice = unitPrice;
 	}
 
 	public Integer getProductId() {
@@ -67,16 +67,16 @@ public class Product {
 	}
 
 	public BigDecimal getPrice() {
-		return price;
+		return unitPrice;
 	}
 
 	public void setPrice(BigDecimal price) {
-		this.price = price;
+		this.unitPrice = price;
 	}
 
 	@Override
 	public String toString() {
-		return "Product [productId=" + productId + ", description=" + description + ", price=" + price + "]";
+		return "Product [productId=" + productId + ", description=" + description + ", price=" + unitPrice + "]";
 	}
 
 	public String getImageUrl() {
