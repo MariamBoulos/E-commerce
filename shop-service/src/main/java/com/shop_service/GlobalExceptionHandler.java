@@ -71,6 +71,24 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.CONFLICT)
                 .body(error);
     }
+    
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponse> handleRuntime(
+            RuntimeException e,
+            HttpServletRequest request) {
+
+        ErrorResponse error = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Bad Request",
+                e.getMessage(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity
+                .badRequest()
+                .body(error);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(

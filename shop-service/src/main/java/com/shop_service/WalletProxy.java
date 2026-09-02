@@ -1,30 +1,28 @@
 package com.shop_service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
-
-@FeignClient(name="wallet-service")
+@FeignClient(name = "wallet-service")
 public interface WalletProxy {
-	
-	@GetMapping("/wallet/{walletId}")
-	public Optional<WalletInfo> getWallet(@PathVariable Integer walletId);
-	
-	@PostMapping("/deposit/{userId}/{walletId}/{amount}")
-	public void deposit( @PathVariable Integer userId,@PathVariable Integer walletId,@PathVariable BigDecimal amount);
-	
-	@PostMapping("/withdrawal/{userId}/{walletId}/{amount}")
-	public void withdrawal(@PathVariable Integer userId,@PathVariable Integer walletId, @PathVariable BigDecimal amount);
-	
-	@GetMapping("/history/{userId}")
-	public List<TransactionInfo> history(@PathVariable Integer userId);
-	
-	}
 
+    @PostMapping("/wallet")
+    Optional<WalletInfo> getWallet(
+            @RequestBody WalletRequest request);
 
+    @PostMapping("/deposit")
+    void deposit(
+            @RequestBody TransactionRequest request);
+
+    @PostMapping("/withdrawal")
+    void withdrawal(
+            @RequestBody TransactionRequest request);
+
+    @PostMapping("/history")
+    List<TransactionInfo> history(
+            @RequestBody UserRequest request);
+}

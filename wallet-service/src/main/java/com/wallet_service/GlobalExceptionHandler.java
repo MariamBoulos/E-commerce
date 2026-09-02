@@ -60,6 +60,8 @@ public class GlobalExceptionHandler {
                 .body(error);
     }
     
+    
+    
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<ErrorResponse> handleConflict(
             IllegalStateException e,

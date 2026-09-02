@@ -2,12 +2,15 @@ package com.shop_service;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ProductInfo {
 
 	private Integer productId;
 
 	private String description;
 
+	@JsonProperty("unitPrice")
 	private BigDecimal price;
 
 	public ProductInfo() {

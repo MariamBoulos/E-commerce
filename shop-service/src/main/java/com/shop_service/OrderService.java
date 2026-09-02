@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class OrderService {
 	
@@ -25,8 +27,10 @@ public class OrderService {
 		this.orderProductService = orderProductService;
 		this.inventoryServiceClient = inventoryServiceClient;
 	}
-
+	
+	@Transactional
 	public Order createOrder(Integer userId) {
+		java.util.Map<Integer, BigDecimal> priceByProductId = new java.util.HashMap<>();
 	
 	    if (orderRepo.existsByUserIdAndStatus(userId, OrderStatus.Delayed)) {
 	        throw new RuntimeException(
@@ -42,6 +46,7 @@ public class OrderService {
 	    }
 	
 	    BigDecimal total = BigDecimal.ZERO;
+	    
 	
 	    // Calculate total
 	    for (CartProduct cartProduct : cartProducts) {
@@ -53,6 +58,7 @@ public class OrderService {
 	                                "Product not found: "
 	                                + cartProduct.getProductId()
 	                        ));
+	        priceByProductId.put(cartProduct.getProductId(), product.getPrice());
 	
 	        BigDecimal productTotal =
 	                product.getPrice().multiply(
@@ -84,21 +90,29 @@ public class OrderService {
 	        orderProduct.setOrder(order);
 	        orderProduct.setProductId(cartProduct.getProductId());
 	        orderProduct.setQuantity(cartProduct.getQuantity());
+	        orderProduct.setPrice(priceByProductId.get(cartProduct.getProductId()));
 	
 	        orderProductRepo.save(orderProduct);
+	        order.getOrderProducts().add(orderProduct);
+
 	    }
 	
 	    // Empty the cart
 	    cartProductRepo.deleteAll(cartProducts);
 	
-	    return order;
+	    return orderRepo.findById(order.getOrderId()).orElseThrow();
 	}	
 	
-	public void deleteOrder(Integer userId,Integer orderId) {
+	public void deleteOrder(Integer userId, Integer orderId) {
 		Order order = orderRepo.findByUserIdAndOrderId(userId, orderId).orElseThrow();
+
+		List<OrderProduct> orderProducts = orderProductService.findByOrder(orderId);
+		for (OrderProduct op : orderProducts) {
+			inventoryServiceClient.addToStock(op.getProductId(), op.getQuantity());
+		}
+
 		orderProductService.deleteOrderProducts(orderId);
-		inventoryServiceClient.addToStock(userId, orderId);
-	    orderRepo.delete(order);		
+		orderRepo.delete(order);
 	}
 	
 	public List<Order> allOrders(Integer userId){

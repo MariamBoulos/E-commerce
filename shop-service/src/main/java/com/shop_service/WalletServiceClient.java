@@ -24,60 +24,76 @@ public class WalletServiceClient {
     }
 
     public Optional<WalletInfo> getWallet(Integer walletId) {
-    	 return walletProxy.getWallet(walletId);
+    	 WalletRequest request = new WalletRequest();
+         request.setWalletId(walletId);
+    	 return walletProxy.getWallet(request);
     }
 
     public void deposit(Integer userId, Integer walletId, BigDecimal amount) {
-
-        CircuitBreaker circuitBreaker =
-                circuitBreakerFactory.create("wallet-service");
-
+        CircuitBreaker circuitBreaker =circuitBreakerFactory.create("wallet-service");
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        TransactionRequest request = new TransactionRequest();
+        request.setUserId(userId);
+        request.setWalletId(walletId);
+        request.setAmount(amount);
 
         circuitBreaker.run(
-                () -> RequestContextPropagation.withContext(requestAttributes, () -> {
-                    walletProxy.deposit(userId, walletId, amount);
-                    return null;
-                }),
+                () -> RequestContextPropagation.withContext(
+                        requestAttributes,
+                        () -> {
+                            walletProxy.deposit(request);
+                            return null;
+                        }
+                ),
                 throwable -> {
-                    System.out.println("Wallet service is unavailable.");
+                    System.out.println(
+                            "Wallet service is unavailable."
+                    );
                     return null;
                 }
         );
     }
 
     public void withdrawal(Integer userId, Integer walletId, BigDecimal amount) {
-
-        CircuitBreaker circuitBreaker =
-                circuitBreakerFactory.create("wallet-service");
-
+        CircuitBreaker circuitBreaker =circuitBreakerFactory.create("wallet-service");
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        TransactionRequest request = new TransactionRequest();
+        request.setUserId(userId);
+        request.setWalletId(walletId);
+        request.setAmount(amount);
 
         circuitBreaker.run(
-                () -> RequestContextPropagation.withContext(requestAttributes, () -> {
-                    walletProxy.withdrawal(userId, walletId, amount);
-                    return null;
-                }),
+                () -> RequestContextPropagation.withContext(
+                        requestAttributes,
+                        () -> {
+                            walletProxy.withdrawal(request);
+                            return null;
+                        }
+                ),
                 throwable -> {
-                    System.out.println("Wallet service is unavailable.");
+                    System.out.println(
+                            "Wallet service is unavailable."
+                    );
                     return null;
                 }
         );
     }
 
     public List<TransactionInfo> history(Integer userId) {
-
-        CircuitBreaker circuitBreaker =
-                circuitBreakerFactory.create("wallet-service");
-
+        CircuitBreaker circuitBreaker =circuitBreakerFactory.create("wallet-service");
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        UserRequest request = new UserRequest();
+        request.setUserId(userId);
 
         return circuitBreaker.run(
                 () -> RequestContextPropagation.withContext(
                         requestAttributes,
-                        () -> walletProxy.history(userId)),
+                        () -> walletProxy.history(request)
+                ),
                 throwable -> {
-                    System.out.println("Wallet service is unavailable.");
+                    System.out.println(
+                            "Wallet service is unavailable."
+                    );
                     return List.of();
                 }
         );

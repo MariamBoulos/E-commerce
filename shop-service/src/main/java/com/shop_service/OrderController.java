@@ -2,7 +2,6 @@ package com.shop_service;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +22,7 @@ public class OrderController {
         return orderService.createOrder(request.getUserId());
     }
 	
-	@DeleteMapping("/deleteOrder")
+	@PostMapping("/deleteOrder")
     public void deleteOrder(@RequestBody OrderRequest request) {
         orderService.deleteOrder(request.getUserId(),request.getOrderId()
         );

@@ -3,6 +3,7 @@ package com.inventory_service;
 import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,7 +24,8 @@ public class Product {
 	
 	private String description;
 	
-	private BigDecimal unitPrice;
+	 @JsonProperty("unitPrice")
+	 private BigDecimal price;
 	
 	private String imageUrl;
 	
@@ -34,11 +36,11 @@ public class Product {
 	@JsonBackReference
 	private Category category;
 	
-	public Product(Integer productId, String description, BigDecimal unitPrice) {
+	public Product(Integer productId, String description, BigDecimal price) {
 		super();
 		this.productId = productId;
 		this.description = description;
-		this.unitPrice = unitPrice;
+		this.price = price;
 	}
 
 	public Integer getProductId() {
@@ -67,16 +69,16 @@ public class Product {
 	}
 
 	public BigDecimal getPrice() {
-		return unitPrice;
+		return price;
 	}
 
 	public void setPrice(BigDecimal price) {
-		this.unitPrice = price;
+		this.price = price;
 	}
 
 	@Override
 	public String toString() {
-		return "Product [productId=" + productId + ", description=" + description + ", price=" + unitPrice + "]";
+		return "Product [productId=" + productId + ", description=" + description + ", price=" + price + "]";
 	}
 
 	public String getImageUrl() {

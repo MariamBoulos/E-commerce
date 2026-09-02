@@ -31,7 +31,7 @@ public class CartProductController {
 	        );
 	    }
 	
-	 @DeleteMapping("/deleteProductInCart")
+	 @PostMapping("/deleteProductInCart")
 	    public void deleteProductInCart(@RequestBody CartProductRequest request) {
 	        cartProductService.deleteProduct(request.getUserId(),request.getProductId()
 	        );
