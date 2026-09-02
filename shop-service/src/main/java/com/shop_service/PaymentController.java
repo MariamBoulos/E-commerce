@@ -7,26 +7,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class PaymentController {
-	
-	@Autowired
-	private PaymentService paymentService;
 
-	public PaymentController(PaymentService paymentService) {
-		super();
-		this.paymentService = paymentService;
-	}
-	
-	@PostMapping("/payOrder")
-    public void payOrder(@RequestBody PaymentRequest request) {
-        paymentService.pay(request.getUserId(),request.getWalletId(),request.getOrderId(),request.getAmount()
+    @Autowired
+    private PaymentService paymentService;
+
+    public PaymentController(PaymentService paymentService) {
+        super();
+        this.paymentService = paymentService;
+    }
+
+    @PostMapping("/payOrder")
+    public Order payOrder(@RequestBody OrderRequest request) {
+        return paymentService.payOrder(request.getUserId(),request.getOrderId(),request.getWalletId()
         );
     }
-	
-	@PostMapping("/refundOrder")
+
+    @PostMapping("/refundOrder")
     public void refundOrder(@RequestBody PaymentRequest request) {
-        paymentService.refund(request.getUserId(),request.getWalletId(),request.getOrderId(),request.getAmount()
+        paymentService.refund(request.getUserId(), request.getWalletId(),
+                request.getOrderId(),
+                request.getAmount()
         );
     }
 }
-
-

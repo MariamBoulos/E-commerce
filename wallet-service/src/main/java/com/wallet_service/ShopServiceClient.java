@@ -3,6 +3,8 @@ package com.wallet_service;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 @Service
 public class ShopServiceClient {
@@ -18,20 +20,20 @@ public class ShopServiceClient {
         this.circuitBreakerFactory = circuitBreakerFactory;
     }
 
-    public CartInfo createCart(Integer userId) {
+    public CartInfo createCart(Integer userId,String username) {
+        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("shop-service");
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 
-        CircuitBreaker circuitBreaker =
-                circuitBreakerFactory.create("shop-service");
+        UserRequest request = new UserRequest();
+        request.setUserId(userId);
 
         return circuitBreaker.run(
-                () -> shopProxy.createCart(userId),
+                () -> RequestContextPropagation.withContext(
+                        requestAttributes,
+                        () -> shopProxy.createCart(username,request)),
                 throwable -> {
                     throwable.printStackTrace();
                     return null;
-                
-                /*throwable -> {
-                    System.out.println("Shop service is unavailable.");
-                    return null;*/
                 }
         );
     }
@@ -41,13 +43,18 @@ public class ShopServiceClient {
         CircuitBreaker circuitBreaker =
                 circuitBreakerFactory.create("shop-service");
 
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+
+        UserRequest request = new UserRequest();
+        request.setUserId(userId);
+
         circuitBreaker.run(
-                () -> {
-                    shopProxy.deleteCartByUserId(userId);
+                () -> RequestContextPropagation.withContext(requestAttributes, () -> {
+                    shopProxy.deleteCartByUserId(request);
                     return null;
-                },
+                }),
                 throwable -> {
-                    System.out.println("Shop service is unavailable.");
+                    throwable.printStackTrace();
                     return null;
                 }
         );

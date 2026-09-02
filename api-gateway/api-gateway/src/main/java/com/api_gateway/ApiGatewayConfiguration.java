@@ -149,6 +149,10 @@ public class ApiGatewayConfiguration {
 						.path("/wallet/**", "/wallets/**")
 						.uri("lb://wallet-service"))
 				
+				.route(p -> p
+						.path("/createWallet/**")
+						.uri("lb://wallet-service"))
+				
 				.build();
 				
 	}

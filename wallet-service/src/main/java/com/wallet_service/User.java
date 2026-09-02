@@ -23,7 +23,6 @@ public class User {
 	@GeneratedValue
 	private Integer userId;
 	
-	@Column(unique = true)
 	private String email;
 	
 	@Column(unique = true)

@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 @Service
 public class WalletServiceClient {
@@ -30,11 +32,13 @@ public class WalletServiceClient {
         CircuitBreaker circuitBreaker =
                 circuitBreakerFactory.create("wallet-service");
 
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+
         circuitBreaker.run(
-                () -> {
-                    walletProxy.deposit(userId, walletId,amount);
+                () -> RequestContextPropagation.withContext(requestAttributes, () -> {
+                    walletProxy.deposit(userId, walletId, amount);
                     return null;
-                },
+                }),
                 throwable -> {
                     System.out.println("Wallet service is unavailable.");
                     return null;
@@ -47,11 +51,13 @@ public class WalletServiceClient {
         CircuitBreaker circuitBreaker =
                 circuitBreakerFactory.create("wallet-service");
 
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+
         circuitBreaker.run(
-                () -> {
+                () -> RequestContextPropagation.withContext(requestAttributes, () -> {
                     walletProxy.withdrawal(userId, walletId, amount);
                     return null;
-                },
+                }),
                 throwable -> {
                     System.out.println("Wallet service is unavailable.");
                     return null;
@@ -64,8 +70,12 @@ public class WalletServiceClient {
         CircuitBreaker circuitBreaker =
                 circuitBreakerFactory.create("wallet-service");
 
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+
         return circuitBreaker.run(
-                () -> walletProxy.history(userId),
+                () -> RequestContextPropagation.withContext(
+                        requestAttributes,
+                        () -> walletProxy.history(userId)),
                 throwable -> {
                     System.out.println("Wallet service is unavailable.");
                     return List.of();

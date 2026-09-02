@@ -35,6 +35,13 @@ public class StockService {
 	}
 	
 	public Stock getStock(Integer productId) {
+		Stock stock = stockRepo.findByProductProductId(productId);
+
+	    if (stock == null) {
+	        throw new ResourceNotFoundException(
+	            "No stock record for product " + productId
+	        );
+	    }
 		return stockRepo.findByProductProductId(productId);
 	}
 

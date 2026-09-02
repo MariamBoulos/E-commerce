@@ -20,34 +20,55 @@ public class CartProductService {
 		
 	}
 	
-	public CartProduct addProduct(Integer userId, Integer productId, Integer quantity) {
-        Cart cart = cartRepo.findByUserId(userId).orElseThrow();
-        StockInfo stock = inventoryServiceClient.getStock(productId);
-        Optional<CartProduct> existing =cartProductRepo.findByCartUserIdAndProductId(userId, productId);
-        int currentQuantity = 0;
+public CartProduct addProduct(Integer userId, Integer productId, Integer quantity) {
 
-        if (existing.isPresent()) {
-            currentQuantity = existing.get().getQuantity();
-        }
+    Cart cart = cartRepo.findByUserId(userId).orElseThrow();
 
-        int requestedQuantity = currentQuantity + quantity;
+    StockInfo stock = inventoryServiceClient.getStock(productId);
 
-        if (stock == null || stock.getAvailable() < requestedQuantity) {
-            throw new RuntimeException("Not enough stock available.");
-        }
-
-        if (existing.isPresent()) {
-            return addQuantity(existing.get().getCartProductId(), quantity);
-        }
-        
-        CartProduct cartProduct = new CartProduct();
-        cartProduct.setProductId(productId);
-        cartProduct.setQuantity(quantity);
-        cartProduct.setCart(cart);
-
-        return cartProductRepo.save(cartProduct);
+    if (stock == null) {
+        throw new IllegalStateException(
+            "Could not retrieve stock information."
+        );
     }
 
+    if (quantity == null || quantity <= 0) {
+        throw new IllegalArgumentException(
+            "Quantity must be greater than 0."
+        );
+    }
+
+    Optional<CartProduct> existing =
+            cartProductRepo.findByCartUserIdAndProductId(userId, productId);
+
+    int currentQuantity = 0;
+
+    if (existing.isPresent()) {
+        currentQuantity = existing.get().getQuantity();
+    }
+
+    int requestedQuantity = currentQuantity + quantity;
+
+    if (stock.getAvailable() < requestedQuantity) {
+        throw new InsufficientStockException(
+            "Not enough stock."
+        );
+    }
+
+    if (existing.isPresent()) {
+        return addQuantity(
+            existing.get().getCartProductId(),
+            quantity
+        );
+    }
+
+    CartProduct cartProduct = new CartProduct();
+    cartProduct.setProductId(productId);
+    cartProduct.setQuantity(quantity);
+    cartProduct.setCart(cart);
+
+    return cartProductRepo.save(cartProduct);
+}
 	public CartProduct addQuantity(Integer cartProductId, Integer quantity) {
 		 CartProduct cartProduct =cartProductRepo.findById(cartProductId).orElseThrow();
 		    cartProduct.setQuantity(cartProduct.getQuantity() + quantity);

@@ -23,11 +23,14 @@ public class UserService {
 		this.shopServiceClient = shopServiceClient;
 	}
 
-	public User createUser(User user) {
-    	user.setPassword(passwordEncoder.encode(user.getPassword()));
-    	User saved= userRepository.save(user);
-    	shopServiceClient.createCart(user.getUserId());
-    	return saved;        
+    public User createUser(User user) {
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new IllegalStateException("Username is already taken.");
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User saved = userRepository.save(user);
+        shopServiceClient.createCart(user.getUserId(), saved.getUsername());
+        return saved;
     }
     
     public List<User> getAllUsers() {

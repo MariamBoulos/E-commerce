@@ -1,37 +1,41 @@
 package com.shop_service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class PaymentService {
-	
-	@Autowired
-	private final WalletServiceClient walletServiceClient;
-	
-	public PaymentService(WalletServiceClient walletServiceClient) {
-		super();
-		this.walletServiceClient = walletServiceClient;
 
-	}
+    private final WalletServiceClient walletServiceClient;
+    private final OrderRepository orderRepo;
 
-	public void pay(Integer userId, Integer walletId, Integer orderId, BigDecimal amount) {
-		Payment payment = new Payment();
-		payment.setStart(LocalDateTime.now());
-		walletServiceClient.withdrawal(userId, walletId, amount);
-		payment.setEnd(LocalDateTime.now());
-	}
-	
-	public void refund(Integer userId, Integer walletId, Integer orderId, BigDecimal amount) {
-		walletServiceClient.deposit(userId, walletId, amount);
-	}
-	
-	
-	
-	
+    public PaymentService(WalletServiceClient walletServiceClient,OrderRepository orderRepo) {
+        this.walletServiceClient = walletServiceClient;
+        this.orderRepo = orderRepo;
+    }
 
+    public Order payOrder(Integer userId, Integer orderId, Integer walletId) {
+        Order order = orderRepo.findByUserIdAndOrderId(userId, orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found."));
+
+        if (order.getStatus() != OrderStatus.Delayed) {
+            throw new RuntimeException("Order is not awaiting payment.");
+        }
+
+        WalletInfo wallet = walletServiceClient.getWallet(walletId)
+                .orElseThrow(() -> new RuntimeException("Wallet not found."));
+
+        if (wallet.getBalance().compareTo(order.getTotal()) < 0) {
+            throw new RuntimeException("Insufficient balance.");
+        }
+
+        walletServiceClient.withdrawal(userId,walletId,order.getTotal());
+        order.setStatus(OrderStatus.Confirmed);
+        return orderRepo.save(order);
+    }
+
+    public void refund(Integer userId,Integer walletId,Integer orderId,BigDecimal amount) {
+        walletServiceClient.deposit(userId, walletId, amount);
+    }
 }

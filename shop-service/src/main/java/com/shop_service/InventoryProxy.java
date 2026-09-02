@@ -1,7 +1,6 @@
 package com.shop_service;
 
 import java.util.Optional;
-
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,16 +18,16 @@ public interface InventoryProxy {
 	public void addProductToCart(@PathVariable Integer userId, @PathVariable Integer productId,
 			@PathVariable Integer quantity);
 	
-	@GetMapping("/getProduct/{productId}")
-	public Optional<ProductInfo> getProduct(@PathVariable("productId") Integer productId);
+	@PostMapping("/getProduct")
+	public Optional<ProductInfo> getProduct(@RequestBody ProductRequest request);
 	
-	@PostMapping("/removeFromStock/{productId}/{amount}")
-	public void removeFromStock(@PathVariable("productId") Integer productId, @PathVariable("amount") Integer amount );
+	@PostMapping("/removeFromStock")
+	public void removeFromStock(@RequestBody StockRequest request);
 	
-	@PostMapping("/addToStock/{productId}/{amount}")
-	public void addToStock(@PathVariable("productId") Integer productId, @PathVariable("amount") Integer amount );
+	@PostMapping("/addToStock")
+	public void addToStock(@RequestBody StockRequest request);
 	
-	@GetMapping("/getStock/{productId}")
-	public StockInfo getStock(@PathVariable("productId") Integer productId);
+	@PostMapping("/getStock")
+	public StockInfo getStock(@RequestBody StockRequest request);
 
 }

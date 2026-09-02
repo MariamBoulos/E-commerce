@@ -20,8 +20,7 @@ public class OrderController {
 	
 	@PostMapping("/createOrder")
     public Order createOrder(@RequestBody OrderRequest request) {
-        return orderService.createOrder(request.getUserId(),request.getWalletId()
-        );
+        return orderService.createOrder(request.getUserId());
     }
 	
 	@DeleteMapping("/deleteOrder")

@@ -1,16 +1,11 @@
 package com.inventory_service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.util.UUID;
+
+
 
 @Service
 public class ProductService {
@@ -18,7 +13,6 @@ public class ProductService {
 	private final ProductRepository productRepo;
 	private final CategoryRepository categoryRepo;
 	private final StockRepository stockRepo;
-	private final Path uploadPath = Paths.get("uploads/products");
 
 	public ProductService(ProductRepository productRepo, CategoryRepository categoryRepo, StockRepository stockRepo) {
 		super();
@@ -27,21 +21,10 @@ public class ProductService {
 		this.stockRepo = stockRepo;
 	}
 	
-	public Product createProduct(Product product, MultipartFile image) {
-	    Category category = categoryRepo.findById(product.getCategory().getCategoryId()).orElseThrow();
+	public Product createProduct(Product product) {
+		Category category = categoryRepo.findById(product.getCategory().getCategoryId()).orElseThrow();
 	    product.setCategory(category);
 		category.setLastUpdated(LocalDateTime.now());
-
-	    try {
-	    	Files.createDirectories(uploadPath);
-	    	String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
-	        Path filePath = uploadPath.resolve(fileName);
-	        image.transferTo(filePath);
-	        product.setImageUrl("/images/" + fileName);
-
-	    } catch (IOException e) {
-	        throw new RuntimeException("Could not save image", e);
-	    }
 	    
 	    product.setCurrency(ProductCurrency.EGP);
 	    Product savedProduct = productRepo.save(product);

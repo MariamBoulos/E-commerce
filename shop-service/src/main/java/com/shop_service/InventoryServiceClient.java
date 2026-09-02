@@ -1,10 +1,11 @@
 package com.shop_service;
 
 import java.util.Optional;
-
 import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 @Service
 public class InventoryServiceClient {
@@ -25,8 +26,12 @@ public class InventoryServiceClient {
         CircuitBreaker circuitBreaker =
                 circuitBreakerFactory.create("inventory-service");
 
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+
         return circuitBreaker.run(
-                () -> inventoryProxy.createProduct(product),
+                () -> RequestContextPropagation.withContext(
+                        requestAttributes,
+                        () -> inventoryProxy.createProduct(product)),
                 throwable -> {
                     System.out.println("Inventory service is unavailable.");
                     return null;
@@ -39,8 +44,15 @@ public class InventoryServiceClient {
         CircuitBreaker circuitBreaker =
                 circuitBreakerFactory.create("inventory-service");
 
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+
+        ProductRequest request = new ProductRequest();
+        request.setProductId(productId);
+
         return circuitBreaker.run(
-                () -> inventoryProxy.getProduct(productId),
+                () -> RequestContextPropagation.withContext(
+                        requestAttributes,
+                        () -> inventoryProxy.getProduct(request)),
                 throwable -> {
                     System.out.println("Inventory service is unavailable.");
                     return Optional.empty();
@@ -49,15 +61,17 @@ public class InventoryServiceClient {
     }
 
     public void removeFromStock(Integer productId, Integer amount) {
-
-        CircuitBreaker circuitBreaker =
-                circuitBreakerFactory.create("inventory-service");
+        CircuitBreaker circuitBreaker =circuitBreakerFactory.create("inventory-service");
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        StockRequest request = new StockRequest();
+        request.setProductId(productId);
+        request.setAmount(amount);
 
         circuitBreaker.run(
-                () -> {
-                    inventoryProxy.removeFromStock(productId, amount);
+                () -> RequestContextPropagation.withContext(requestAttributes, () -> {
+                    inventoryProxy.removeFromStock(request);
                     return null;
-                },
+                }),
                 throwable -> {
                     System.out.println("Inventory service is unavailable.");
                     return null;
@@ -66,27 +80,33 @@ public class InventoryServiceClient {
     }
     
     public StockInfo getStock(Integer productId) {
-        StockInfo stock = inventoryProxy.getStock(productId);
+        StockRequest request = new StockRequest();
+        request.setProductId(productId);
+
+        StockInfo stock = inventoryProxy.getStock(request);
 
         System.out.println("STOCK FROM INVENTORY: " + stock);
 
         return stock;
     }
-
+    
     public void addToStock(Integer productId, Integer amount) {
-
-        CircuitBreaker circuitBreaker =
-                circuitBreakerFactory.create("inventory-service");
+        CircuitBreaker circuitBreaker =circuitBreakerFactory.create("inventory-service");
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        StockRequest request = new StockRequest();
+        request.setProductId(productId);
+        request.setAmount(amount);
 
         circuitBreaker.run(
-                () -> {
-                    inventoryProxy.addToStock(productId, amount);
+                () -> RequestContextPropagation.withContext(requestAttributes, () -> {
+                    inventoryProxy.addToStock(request);
                     return null;
-                },
+                }),
                 throwable -> {
-                    System.out.println("Inventory service is unavailable.");
+                    throwable.printStackTrace();
                     return null;
                 }
         );
+    
     }
 }
